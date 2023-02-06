@@ -1,0 +1,17 @@
+<%= if @current_user do %>
+<%= for user <- @users do %>
+
+<%= link to: Routes.users_path(@conn, :show, user.id) do %>
+<%= user.name %>
+<% end %>
+
+<%= img_tag Venue.Avatar.url({user.avatar, user}, :thumb, signed: true) %>
+
+<% days = Date.diff(Date.utc_today(), user.birth) %>
+<%= trunc(days / 365) %> y/o
+<%= user.desc %>
+
+<%= trunc(Geocalc.distance_between(user.geom.coordinates, @current_user.geom.coordinates) / 1000) %> km <br>
+
+<% end %>
+<% end %>
